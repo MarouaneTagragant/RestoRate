@@ -27,6 +27,18 @@ class User implements UserInterface
     private $email;
 
     /**
+     * @ORM\Column(type="string", length=180, unique=false)
+     */
+    private $firstName;
+
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=false)
+     */
+    private $lastName;
+
+
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -44,23 +56,20 @@ class User implements UserInterface
     private $city;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="user", orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $reviews;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Restaurant", mappedBy="user", orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true)
      */
     private $restaurants;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $firstName;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $lastName;
-
     public function __construct()
     {
+        $this->reviews = new ArrayCollection();
         $this->restaurants = new ArrayCollection();
     }
 
@@ -81,6 +90,27 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getFirstName(): ?string 
+    {
+        return $this->firstName;
+    }
+
+    public function getLastName(): ?string 
+    {
+        return $this->lastName;
+    }
+
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+    }
+
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+    }
+
+
     /**
      * A visual identifier that represents this user.
      *
@@ -97,7 +127,7 @@ class User implements UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // Role par default
+        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -142,14 +172,45 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getCity(): ?City
+    public function getCity()
     {
         return $this->city;
     }
 
-    public function setCity(?City $city): self
+    public function setCity(City $city)
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Review[]
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review)
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews[] = $review;
+            $review->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review)
+    {
+        if ($this->reviews->contains($review)) {
+            $this->reviews->removeElement($review);
+            // set the owning side to null (unless already changed)
+            if ($review->getUser() === $this) {
+                $review->setUser(null);
+            }
+        }
 
         return $this;
     }
@@ -162,7 +223,7 @@ class User implements UserInterface
         return $this->restaurants;
     }
 
-    public function addRestaurant(Restaurant $restaurant): self
+    public function addRestaurant(Restaurant $restaurant)
     {
         if (!$this->restaurants->contains($restaurant)) {
             $this->restaurants[] = $restaurant;
@@ -172,7 +233,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeRestaurant(Restaurant $restaurant): self
+    public function removeRestaurant(Restaurant $restaurant)
     {
         if ($this->restaurants->contains($restaurant)) {
             $this->restaurants->removeElement($restaurant);
@@ -181,30 +242,6 @@ class User implements UserInterface
                 $restaurant->setUser(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function setFirstName(string $firstName): self
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(string $lastName): self
-    {
-        $this->lastName = $lastName;
 
         return $this;
     }

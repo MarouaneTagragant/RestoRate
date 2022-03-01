@@ -8,7 +8,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use faker\Factory;
+use Faker\Factory;
 
 class UserFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -23,32 +23,32 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create('fr_FR');
-        $city = $this->cityRepository->find(rand(1, 1000));
 
-        $userAdmin = new User();
-        $userAdmin->setEmail('moderateur@restorate.com');
-        $userAdmin->setFirstName($faker->firstNameMale);
-        $userAdmin->setLastName($faker->lastName);
-        $userAdmin->setPassword($this->encoder->encodePassword($userAdmin, '123456789'));
-        $userAdmin->setRoles(['ROLE_ADMIN']);
-        $userAdmin->setCity($city);
-        $manager->persist($userAdmin);
+        $userModerateur = new User();
+        $userModerateur->setEmail('moderateur@restorate.com');
+        $userModerateur->setPassword($this->encoder->encodePassword($userModerateur, '123456789'));
+        $userModerateur->setRoles(['ROLE_ADMIN']);
+        $userModerateur->setFirstName('dzadza');
+        $userModerateur->setLastName('dzadza');
+        $userModerateur->setCity($this->cityRepository->find(rand(1, 200)));
+        $manager->persist($userModerateur);
 
         $userClient = new User();
         $userClient->setEmail('client@restorate.com');
-        $userClient->setFirstName($faker->firstNameMale);
-        $userClient->setLastName($faker->lastName);
         $userClient->setPassword($this->encoder->encodePassword($userClient, '123456789'));
         $userClient->setRoles(['ROLE_CLIENT']);
-        $userClient->setCity($city);
+        $userClient->setFirstName('dzadza');
+        $userClient->setLastName('dzadza');
+        $userModerateur->setCity($this->cityRepository->find(rand(1, 200)));
         $manager->persist($userClient);
 
         $userRestaurateur = new User();
         $userRestaurateur->setEmail('restaurateur@restorate.com');
         $userRestaurateur->setPassword($this->encoder->encodePassword($userRestaurateur, '123456789'));
         $userRestaurateur->setRoles(['ROLE_RESTAURATEUR']);
-        $userRestaurateur->setCity($city);
+        $userRestaurateur->setFirstName('dzadza');
+        $userRestaurateur->setLastName('dzadza');
+        $userModerateur->setCity($this->cityRepository->find(rand(1, 200)));
         $manager->persist($userRestaurateur);
 
         $manager->flush();

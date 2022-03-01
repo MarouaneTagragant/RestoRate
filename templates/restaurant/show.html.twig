@@ -25,7 +25,7 @@
                         Rédigez un avis sur ce restaurant !
                     </div>
                     <div class="card-body">
-                        <form action="">
+                        <form>
                             <div class="form-group">
                                 <label for="">Message</label>
                                 <textarea name="" id="" rows="3" class="form-control"></textarea>
@@ -40,6 +40,25 @@
                     </div>
                 </div>
             </div>
+                {% for review in restaurant.reviews %}
+                    <div class=\"card mb-2\">
+                        <div class=\"card-header\">
+                            Rédigé par John Doe ({{ review.rating }}/5)
+                        </div>
+                        <div class=\"card-body\">
+                            {{ review.message }}
+                        </div>
+                        <div class=\"card-footer\">
+                            <form action=\"\">
+                                <div class=\"form-group\">
+                                    <label for=\"\">Message</label>
+                                    <input type=\"text\" class=\"form-control\" placeholder=\"Répondre à cet avis...\">
+                                </div>
+                                <button class=\"btn btn-sm btn-primary float-right\">Répondre</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
         </div>
     </div>
 {% endblock %}

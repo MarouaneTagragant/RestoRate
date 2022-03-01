@@ -23,13 +23,16 @@ class RestaurantFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create('fr_FR');
 
-        for($i=0; $i < 1000; $i++) {
-
+        for($i=0; $i < 100; $i++) {
+            
+            $roles = array('moderateur@restorate.com','restaurateur@restorate.com');
+            $managerOfRestaurant = array_rand($roles);
+            
             $restaurant = new Restaurant();
             $restaurant->setName( $faker->company );
             $restaurant->setDescription( $faker->text(500) );
-            // $restaurant->setCity( $this->cityRepository->find( rand(1, 1000) ) );
-            // $restaurant->setUser( $this->userRepository->findOneBy(["email" => "restaurateur@restorate.com"]) );
+            $restaurant->setCity( $this->cityRepository->find( rand(1, 200) ) );
+            $restaurant->setUser( $this->userRepository->findOneBy([ "email" => $roles[$managerOfRestaurant] ]) );
 
             $manager->persist($restaurant);
         }

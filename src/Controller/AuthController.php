@@ -19,7 +19,7 @@ class AuthController extends AbstractController
         // lastUserName ajouté
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('auth/login.html.twig', ['lastUserName' => $lastUsername, 'error' => $error]);
+        return $this->render('security/login.html.twig', ['lastUserName' => $lastUsername, 'error' => $error]);
     }
 
     /**
