@@ -12,7 +12,7 @@
                         <strong>Localité:</strong> {{ restaurant.city.zipcode }} {{ restaurant.city.name }}
                     </li>
                     <li>
-                        <strong>Note moyenne :</strong> {{ restaurant.averageRating | number_format(2, ',') }}
+                        <strong>Note moyenne :</strong> {{ restaurant.getRestaurantRating | number_format(2, ',') }}
                     </li>
                 </ul>
                 <small>

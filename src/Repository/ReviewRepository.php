@@ -20,7 +20,7 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
-    public function findTenRestaurantByRatings() {
+    public function findBestTenRestaurantByRatings() {
 
         return $this->createQueryBuilder('r')
             ->select('restaurant.id as restaurantId')

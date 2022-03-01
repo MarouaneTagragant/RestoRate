@@ -27,13 +27,13 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=false)
+     * @ORM\Column(type="string", length=180, unique=false, nullable=true)
      */
     private $firstName;
 
 
     /**
-     * @ORM\Column(type="string", length=180, unique=false)
+     * @ORM\Column(type="string", length=180, unique=false, nullable=true)
      */
     private $lastName;
 

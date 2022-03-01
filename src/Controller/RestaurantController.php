@@ -127,7 +127,7 @@ class RestaurantController extends AbstractController
     public function home()
     {
 
-        $tenRestaurants = $this->getDoctrine()->getRepository(Review::class)->findTenRestaurantByRatings();
+        $tenRestaurants = $this->getDoctrine()->getRepository(Review::class)->findBestTenRestaurantByRatings();
 
         $tenBestRestaurants = array_map(function($data) {
             return $this->getDoctrine()->getRepository(Restaurant::class)->find($data['restaurantId']);
